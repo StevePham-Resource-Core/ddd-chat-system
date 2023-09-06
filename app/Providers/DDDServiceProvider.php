@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use DDD\Infrastructure\User\Providers\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class DDDServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(DDDServiceProvider::class);
+        $this->app->register(UserServiceProvider::class);
     }
 
     /**
