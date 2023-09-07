@@ -2,6 +2,7 @@
 
 namespace DDD\Infrastructure\Kafka\Commands;
 
+use DDD\Application\IntegrationClients\KafkaClient;
 use Illuminate\Console\Command;
 
 class KafkaConsumer extends Command
@@ -27,6 +28,14 @@ class KafkaConsumer extends Command
      */
     public function handle()
     {
+        $kafkaConsumer = KafkaClient::make();
 
+        while (true) {
+            $kafkaConsumer->subscribe(['default']);
+
+            $message = $kafkaConsumer->consume(120 * 1000);
+
+            dd($message);
+        }
     }
 }

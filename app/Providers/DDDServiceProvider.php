@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DDD\Infrastructure\Core\Providers\CoreServiceProvider;
 use DDD\Infrastructure\Kafka\Providers\KafkaServiceProvider;
 use DDD\Infrastructure\User\Providers\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -15,8 +16,8 @@ class DDDServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(UserServiceProvider::class);
-        $this->app->register(KafkaServiceProvider::class);
+        $this->registerUtils();
+        $this->registerDDDServiceProvider();
     }
 
     /**
@@ -26,6 +27,19 @@ class DDDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+    }
+
+    public function registerDDDServiceProvider()
+    {
+        $this->app->register(CoreServiceProvider::class);
+        $this->app->register(UserServiceProvider::class);
+        $this->app->register(KafkaServiceProvider::class);
+    }
+
+    public function registerUtils()
+    {
+        if (file_exists($file = app()->basePath('utils/helpers.php'))) {
+            require $file;
+        }
     }
 }

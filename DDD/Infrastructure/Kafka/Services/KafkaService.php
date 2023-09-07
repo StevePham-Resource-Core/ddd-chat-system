@@ -24,6 +24,18 @@ class KafkaService
 
     public function client()
     {
-        dd('client');
+        $conf = new \RdKafka\Conf();
+
+        $conf->set('bootstrap.servers', data_get($this->config, 'bootstrap_server'));
+        $conf->set('security.protocol', data_get($this->config, 'security_protocol'));
+        $conf->set('sasl.mechanism', data_get($this->config, 'sasl_mechanism'));
+        $conf->set('sasl.username', data_get($this->config, 'sasl_username'));
+        $conf->set('sasl.password', data_get($this->config, 'sasl_password'));
+        $conf->set('group.id', data_get($this->config, 'group_id'));
+        $conf->set('auto.offset.reset', data_get($this->config, 'auto_offset_reset'));
+
+        $consumer = new \RdKafka\KafkaConsumer($conf);
+
+        return $consumer;
     }
 }
