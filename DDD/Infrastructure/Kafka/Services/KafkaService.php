@@ -26,7 +26,7 @@ class KafkaService
     {
         $conf = new \RdKafka\Conf();
 
-        $conf->set('bootstrap.servers', data_get($this->config, 'bootstrap_server'));
+        $conf->set('bootstrap.servers', data_get($this->config, 'bootstrap_servers'));
         $conf->set('security.protocol', data_get($this->config, 'security_protocol'));
         $conf->set('sasl.mechanism', data_get($this->config, 'sasl_mechanism'));
         $conf->set('sasl.username', data_get($this->config, 'sasl_username'));

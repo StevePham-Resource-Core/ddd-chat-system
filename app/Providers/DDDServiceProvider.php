@@ -27,13 +27,14 @@ class DDDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
     }
 
     public function registerDDDServiceProvider()
     {
+        $this->app->register(KafkaServiceProvider::class);
         $this->app->register(CoreServiceProvider::class);
         $this->app->register(UserServiceProvider::class);
-        $this->app->register(KafkaServiceProvider::class);
     }
 
     public function registerUtils()

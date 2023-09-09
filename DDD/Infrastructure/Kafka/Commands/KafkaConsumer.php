@@ -35,7 +35,20 @@ class KafkaConsumer extends Command
 
             $message = $kafkaConsumer->consume(120 * 1000);
 
-            dd($message);
+            switch ($message->err) {
+                case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    var_dump($message->payload);
+                    break;
+                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                    echo "No more message; will wait for more\n";
+                    break;
+                case RD_KAFKA_RESP_ERR__TIME_OUT:
+                    echo "Time out\n";
+                    break;
+                default:
+                    throw new \Exception($message->errStr(), $message->err);
+                    break;
+            }
         }
     }
 }

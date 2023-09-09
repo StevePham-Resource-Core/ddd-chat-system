@@ -4,8 +4,10 @@ namespace DDD\Infrastructure\Kafka\Providers;
 
 use DDD\Application\IntegrationClients\KafkaClient;
 use DDD\Infrastructure\Kafka\Commands\KafkaConsumer;
+use DDD\Infrastructure\Kafka\Connectors\KafkaConnector;
 use DDD\Infrastructure\Kafka\Services\KafkaService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Queue\QueueManager;
 
 class KafkaServiceProvider extends ServiceProvider
 {
@@ -15,19 +17,26 @@ class KafkaServiceProvider extends ServiceProvider
     {
         $this->mergeConfig();
 
-        $this->app->singleton(KafkaService::class, function($app) {
-            return new KafkaService(config('ddd_kafka.kafka_connection'));
-        });
+        // $this->app->singleton(KafkaService::class, function($app) {
+        //     return new KafkaService(config('queue.connections.kafka'));
+        // });
 
-        $this->app->singleton(KafkaClient::class, function($app) {
-            return $app->make(KafkaService::class)->client();
-        });
+        // $this->app->singleton(KafkaClient::class, function($app) {
+        //     return $app->make(KafkaService::class)->client();
+        // });
     }
 
     public function boot()
     {
         $this->bootConfig();
         $this->bootCommands();
+
+        /** @var QueueManager */
+        $queueManager = $this->app['queue'];
+
+        $queueManager->addConnector('kafka', function() {
+            return new KafkaConnector;
+        });
     }
 
     public function configName()
