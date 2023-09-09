@@ -22,11 +22,14 @@ class KafkaConnector implements ConnectorInterface
         $conf->set('sasl.mechanisms', data_get($config, 'sasl_mechanisms'));
         $conf->set('sasl.username', data_get($config, 'sasl_username'));
         $conf->set('sasl.password', data_get($config, 'sasl_password'));
+
+        $producer = new \RdKafka\Producer($conf);
+
         $conf->set('group.id', data_get($config, 'group_id'));
         $conf->set('auto.offset.reset', data_get($config, 'auto_offset_reset'));
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        return new KafkaQueue($consumer);
+        return new KafkaQueue($producer, $consumer);
     }
 }

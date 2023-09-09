@@ -3,6 +3,7 @@
 namespace DDD\Infrastructure\Kafka\Commands;
 
 use DDD\Application\IntegrationClients\KafkaClient;
+use DDD\Infrastructure\Kafka\Constants\KafkaConstant;
 use Illuminate\Console\Command;
 
 class KafkaConsumer extends Command
@@ -36,13 +37,13 @@ class KafkaConsumer extends Command
             $message = $kafkaConsumer->consume(120 * 1000);
 
             switch ($message->err) {
-                case RD_KAFKA_RESP_ERR_NO_ERROR:
+                case KafkaConstant::RD_KAFKA_RESP_ERR_NO_ERROR:
                     var_dump($message->payload);
                     break;
-                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                case KafkaConstant::RD_KAFKA_RESP_ERR__PARTITION_EOF:
                     echo "No more message; will wait for more\n";
                     break;
-                case RD_KAFKA_RESP_ERR__TIME_OUT:
+                case KafkaConstant::RD_KAFKA_RESP_ERR__TIMED_OUT:
                     echo "Time out\n";
                     break;
                 default:

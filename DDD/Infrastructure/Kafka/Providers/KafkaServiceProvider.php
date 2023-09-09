@@ -4,6 +4,7 @@ namespace DDD\Infrastructure\Kafka\Providers;
 
 use DDD\Application\IntegrationClients\KafkaClient;
 use DDD\Infrastructure\Kafka\Commands\KafkaConsumer;
+use DDD\Infrastructure\Kafka\Commands\KafkaProduce;
 use DDD\Infrastructure\Kafka\Connectors\KafkaConnector;
 use DDD\Infrastructure\Kafka\Services\KafkaService;
 use Illuminate\Support\ServiceProvider;
@@ -58,6 +59,7 @@ class KafkaServiceProvider extends ServiceProvider
     {
         return $this->commands([
             KafkaConsumer::class,
+            KafkaProduce::class,
         ]);
     }
 }
