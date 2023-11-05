@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Filesystem\FileExistsException;
+
 if (! function_exists('ddd_path')) {
     /**
      * @var string $layer
@@ -10,7 +12,12 @@ if (! function_exists('ddd_path')) {
         $layerMappers = [
             'A' => 'Application',
             'I' => 'Infrastructure',
-            'D' => 'Domain'
+            'D' => 'Domain',
+            'U' => 'UI',
+            'Application' => 'Application',
+            'Infrastructure' => 'Infrastructure',
+            'Domain' => 'Domain',
+            'UI' => 'UI',
         ];
 
         $layer = $layerMappers[$layer];
@@ -33,5 +40,33 @@ if (! function_exists('config_path')) {
     function config_path($path = '')
     {
         return app()->basePath() . '/config' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+}
+
+if (! function_exists('migration_path'))
+{
+    function migration_path(string $aggregate)
+    {
+        $path = base_path("DDD/Infrastructure/{$aggregate}/Database/Migrations/");
+
+        if (! file_exists($path)) {
+            throw new FileExistsException('Migration path not found.');
+        }
+
+        return $path;
+    }
+}
+
+if (! function_exists('infrastructure_path'))
+{
+    function infrastructure_path(string $aggregate)
+    {
+        $path = base_path("DDD/Infrastructure/{$aggregate}");
+
+        if (! file_exists($path)) {
+            throw new FileExistsException('Migration path not found.');
+        }
+
+        return $path;
     }
 }
